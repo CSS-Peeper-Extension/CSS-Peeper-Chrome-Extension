@@ -1,0 +1,16 @@
+import './listeners';
+
+import ContextMenu from './contextmenu';
+import { runMigrations } from './migrations';
+import { updatePeriodicSync } from './sync-scheduler';
+
+// Alarms are set up after the migrations so the first sync they trigger
+// sees repaired data.
+runMigrations().then(updatePeriodicSync);
+
+chrome.runtime.setUninstallURL('https://stylebot.dev/goodbye');
+chrome.action.setBadgeBackgroundColor({
+  color: '#555',
+});
+
+ContextMenu.init();
